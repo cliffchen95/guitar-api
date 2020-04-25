@@ -1,5 +1,4 @@
 from peewee import *
-import datetime
 
 
 DATABASE = SqliteDatabase('guitar.sqlite')
