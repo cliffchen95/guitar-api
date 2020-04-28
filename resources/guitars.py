@@ -31,7 +31,11 @@ def find_guitar(id):
 @guitars.route('/', methods=['POST'])
 def create_guitar():
   payload = request.get_json()
-  new_guitar = Guitar.create(name=payload['name'], is_electric=payload['is_electric'], price=payload['price'])
+  new_guitar = Guitar.create(
+    name=payload['name'], 
+    is_electric=payload['is_electric'], 
+    price=payload['price']
+  )
   
   guitar_dict = model_to_dict(new_guitar)
   return jsonify(
@@ -42,9 +46,23 @@ def create_guitar():
 # edit guitar
 @guitars.route('/<id>', methods=['PUT'])
 def edit_guitar(id):
-  return id
+  payload = request.get_json()
 
-@guitars.route('<id>', methods=['DELETE'])
+  query = Guitar.update(
+    name=payload['name'], 
+    is_electric=payload['is_electric'], 
+    price=payload['price']
+  ).where(Guitar.id == id)
+  n = query.execute()
+
+  updated_guitar = Guitar.get_by_id(id)
+  return jsonify(
+    data=model_to_dict(updated_guitar),
+    message=f"Successfully edited guitar with id {id}",
+    status=200
+  ), 200
+
+@guitars.route('/<id>', methods=['DELETE'])
 def delete_guitar(id):
   query = Guitar.delete().where(Guitar.id == id)
   n = query.execute()
