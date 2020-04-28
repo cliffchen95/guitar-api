@@ -36,6 +36,20 @@ def create_guitar():
   guitar_dict = model_to_dict(new_guitar)
   return jsonify(
       data=guitar_dict,
-      message="Successfully created dog!",
+      message="Successfully created 1 guitar!",
       status=201
     ), 201
+# edit guitar
+@guitars.route('/<id>', methods=['PUT'])
+def edit_guitar(id):
+  return id
+
+@guitars.route('<id>', methods=['DELETE'])
+def delete_guitar(id):
+  query = Guitar.delete().where(Guitar.id == id)
+  n = query.execute()
+  return jsonify(
+    data={},
+    message=f"Successfully deleted {n} guitar with id {id}",
+    status=200
+  ), 200
