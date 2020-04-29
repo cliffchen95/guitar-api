@@ -14,6 +14,7 @@ class Guitar(Model):
   name = CharField()
   is_electric = BooleanField()
   price = DoubleField()
+  user = ForeignKeyField(User, backref='guitars')
 
   class Meta:
     database = DATABASE
